@@ -7,4 +7,4 @@
  * This is free software, and you are welcome to redistribute it
  * under certain conditions; type `show c' for details.
 */
-#include "include/fluent/atomic/atomic.h"
+#include "atomic.h"
