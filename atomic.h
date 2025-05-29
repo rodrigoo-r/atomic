@@ -64,21 +64,25 @@ extern "C"
         volatile size_t value;
     } atomic_size_t;
 
-    static inline void atomic_size_init(atomic_size_t* p, size_t v) {
+    static inline void atomic_size_init(atomic_size_t* p, size_t v)
+    {
         p->value = v;
     }
 
-    static inline size_t atomic_size_load(atomic_size_t* p) {
+    static inline size_t atomic_size_load(atomic_size_t* p)
+    {
         MemoryBarrier(); // full barrier
         return p->value;
     }
 
-    static inline void atomic_size_store(atomic_size_t* p, size_t v) {
+    static inline void atomic_size_store(atomic_size_t* p, size_t v)
+    {
         MemoryBarrier();
         p->value = v;
     }
 
-    static inline size_t atomic_size_fetch_add(atomic_size_t* p, size_t v) {
+    static inline size_t atomic_size_fetch_add(atomic_size_t* p, size_t v)
+    {
     #if defined(_WIN64)
         return InterlockedExchangeAdd64((volatile LONGLONG*)&p->value, (LONGLONG)v);
     #else
@@ -86,7 +90,8 @@ extern "C"
     #endif
     }
 
-    static inline size_t atomic_size_fetch_sub(atomic_size_t* p, size_t v) {
+    static inline size_t atomic_size_fetch_sub(atomic_size_t* p, size_t v)
+    {
     #if defined(_WIN64)
         return InterlockedExchangeAdd64((volatile LONGLONG*)&p->value, -(LONGLONG)v);
     #else
@@ -95,30 +100,36 @@ extern "C"
     }
 
 #else
-    typedef struct {
+    typedef struct
+    {
         volatile size_t value;
     } atomic_size_t;
 
-    static inline void atomic_size_init(atomic_size_t* p, size_t v) {
+    static inline void atomic_size_init(atomic_size_t* p, size_t v)
+    {
         __sync_synchronize();
         p->value = v;
     }
 
-    static inline size_t atomic_size_load(atomic_size_t* p) {
+    static inline size_t atomic_size_load(atomic_size_t* p)
+    {
         __sync_synchronize();
         return p->value;
     }
 
-    static inline void atomic_size_store(atomic_size_t* p, size_t v) {
+    static inline void atomic_size_store(atomic_size_t* p, size_t v)
+    {
         __sync_synchronize();
         p->value = v;
     }
 
-    static inline size_t atomic_size_fetch_add(atomic_size_t* p, size_t v) {
+    static inline size_t atomic_size_fetch_add(atomic_size_t* p, size_t v)
+    {
         return __sync_fetch_and_add(&p->value, v);
     }
 
-    static inline size_t atomic_size_fetch_sub(atomic_size_t* p, size_t v) {
+    static inline size_t atomic_size_fetch_sub(atomic_size_t* p, size_t v)
+    {
         return __sync_fetch_and_sub(&p->value, v);
     }
 #endif
