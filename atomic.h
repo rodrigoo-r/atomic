@@ -60,7 +60,7 @@ extern "C"
 
 #elif defined(_WIN32)
     // Pending Windows implementation review
-    #include <windows.h>
+    // #include <windows.h>
     typedef struct {
         /*volatile*/ size_t value;
     } atomic_size_t;
