@@ -59,6 +59,8 @@ extern "C"
     #define atomic_size_fetch_sub(p, v) atomic_fetch_sub(p, v)
 
 #elif defined(_WIN32)
+    // Pending Windows implementation review
+    /*
     #include <windows.h>
     typedef struct {
         volatile size_t value;
@@ -97,8 +99,7 @@ extern "C"
     #else
         return InterlockedExchangeAdd((volatile LONG*)&p->value, -(LONG)v);
     #endif
-    }
-
+    }*/
 #else
     typedef struct
     {
