@@ -60,10 +60,9 @@ extern "C"
 
 #elif defined(_WIN32)
     // Pending Windows implementation review
-    /*
     #include <windows.h>
     typedef struct {
-        volatile size_t value;
+        /*volatile*/ size_t value;
     } atomic_size_t;
 
     static inline void atomic_size_init(atomic_size_t* p, size_t v)
@@ -73,33 +72,35 @@ extern "C"
 
     static inline size_t atomic_size_load(atomic_size_t* p)
     {
-        MemoryBarrier(); // full barrier
+        //MemoryBarrier(); // full barrier
         return p->value;
     }
 
     static inline void atomic_size_store(atomic_size_t* p, size_t v)
     {
-        MemoryBarrier();
+        //MemoryBarrier();
         p->value = v;
     }
 
     static inline size_t atomic_size_fetch_add(atomic_size_t* p, size_t v)
     {
-    #if defined(_WIN64)
+        p->value += v;
+    /*#if defined(_WIN64)
         return InterlockedExchangeAdd64((volatile LONGLONG*)&p->value, (LONGLONG)v);
     #else
         return InterlockedExchangeAdd((volatile LONG*)&p->value, (LONG)v);
-    #endif
+    #endif*/
     }
 
     static inline size_t atomic_size_fetch_sub(atomic_size_t* p, size_t v)
     {
-    #if defined(_WIN64)
+        p->value -= v;
+    /*#if defined(_WIN64)
         return InterlockedExchangeAdd64((volatile LONGLONG*)&p->value, -(LONGLONG)v);
     #else
         return InterlockedExchangeAdd((volatile LONG*)&p->value, -(LONG)v);
-    #endif
-    }*/
+    #endif*/
+    }
 #else
     typedef struct
     {
