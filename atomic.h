@@ -49,18 +49,16 @@ extern "C"
 #include <stddef.h> // size_t
 
 #if __STDC_VERSION__ >= 201112L && !defined(__STDC_NO_ATOMICS__)
-    #include <stdatomic.h>
+#   include <stdatomic.h>
     typedef _Atomic size_t atomic_size_t;
 
-    #define atomic_size_init(p, v) atomic_init(p, v)
-    #define atomic_size_load(p) atomic_load(p)
-    #define atomic_size_store(p, v) atomic_store(p, v)
-    #define atomic_size_fetch_add(p, v) atomic_fetch_add(p, v)
-    #define atomic_size_fetch_sub(p, v) atomic_fetch_sub(p, v)
-
+#   define atomic_size_init(p, v) atomic_init(p, v)
+#   define atomic_size_load(p) atomic_load(p)
+#   define atomic_size_store(p, v) atomic_store(p, v)
+#   define atomic_size_fetch_add(p, v) atomic_fetch_add(p, v)
+#   define atomic_size_fetch_sub(p, v) atomic_fetch_sub(p, v)
 #elif defined(_WIN32)
-    // Pending Windows implementation review
-    // #include <windows.h>
+    #include <windows.h>
     typedef struct {
         /*volatile*/ size_t value;
     } atomic_size_t;
@@ -72,34 +70,34 @@ extern "C"
 
     static inline size_t atomic_size_load(atomic_size_t* p)
     {
-        //MemoryBarrier(); // full barrier
+        MemoryBarrier();
         return p->value;
     }
 
     static inline void atomic_size_store(atomic_size_t* p, size_t v)
     {
-        //MemoryBarrier();
+        MemoryBarrier();
         p->value = v;
     }
 
     static inline size_t atomic_size_fetch_add(atomic_size_t* p, size_t v)
     {
         p->value += v;
-    /*#if defined(_WIN64)
+    #if defined(_WIN64)
         return InterlockedExchangeAdd64((volatile LONGLONG*)&p->value, (LONGLONG)v);
     #else
         return InterlockedExchangeAdd((volatile LONG*)&p->value, (LONG)v);
-    #endif*/
+    #endif
     }
 
     static inline size_t atomic_size_fetch_sub(atomic_size_t* p, size_t v)
     {
         p->value -= v;
-    /*#if defined(_WIN64)
+    #if defined(_WIN64)
         return InterlockedExchangeAdd64((volatile LONGLONG*)&p->value, -(LONGLONG)v);
     #else
         return InterlockedExchangeAdd((volatile LONG*)&p->value, -(LONG)v);
-    #endif*/
+    #endif
     }
 #else
     typedef struct
