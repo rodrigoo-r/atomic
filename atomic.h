@@ -58,6 +58,7 @@ extern "C"
 #   define atomic_size_fetch_add(p, v) atomic_fetch_add(p, v)
 #   define atomic_size_fetch_sub(p, v) atomic_fetch_sub(p, v)
 #elif defined(_WIN32)
+#   ifndef FLUENT_LIBC_NO_WINDOWS_SDK
     #include <windows.h>
     typedef struct
     {
@@ -100,6 +101,7 @@ extern "C"
         return InterlockedExchangeAdd((volatile LONG*)&p->value, -(LONG)v);
     #endif
     }
+#   endif
 #else
     typedef struct
     {
