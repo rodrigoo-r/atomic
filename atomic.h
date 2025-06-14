@@ -59,8 +59,9 @@ extern "C"
 #   define atomic_size_fetch_sub(p, v) atomic_fetch_sub(p, v)
 #elif defined(_WIN32)
     #include <windows.h>
-    typedef struct {
-        /*volatile*/ size_t value;
+    typedef struct
+    {
+        volatile size_t value;
     } atomic_size_t;
 
     static inline void atomic_size_init(atomic_size_t* p, size_t v)
